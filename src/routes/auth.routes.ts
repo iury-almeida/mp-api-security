@@ -5,9 +5,12 @@ export const authRouter = Router();
 
 const authController = new AuthController();
 
-// Rota de login sem implementação de lógica ainda
-authRouter.post('/login', (req, res) => authController.login(req, res));
-
-
+// Rota de login
+authRouter.post('/Login/autenticacao', (req, res) => {
+  authController.login(req, res).catch((error) => {
+    console.error('Error in login route:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  });
+});
 
 

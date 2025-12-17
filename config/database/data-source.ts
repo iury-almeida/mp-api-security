@@ -4,13 +4,14 @@ import { User } from '../../src/entity/User';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
-  host: process.env.DB_HOST || '',
-  port: Number(process.env.DB_PORT) || 1,
-  username: process.env.DB_USER || '',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || '',
+  host: process.env.DB_HOST || 'localhost',
+  // Default MySQL port is 3306 if DB_PORT is not defined
+  port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
+  username: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'Drums6@',
+  database: process.env.DB_NAME || 'MultipecasDB',
   entities: [User], // ***** DO NOT FORGET TO ADD THE ENTITIES HERE *******
-  synchronize: true, // Apenas para ambiente de desenvolvimento
+  synchronize: false, // Apenas para ambiente de desenvolvimento
   logging: false,
 });
 
