@@ -4,8 +4,6 @@ import { router } from './routes';
 import { jwtDecoder } from '../config/middleware/jwtDecoder';
 
 export function createApp(): Application {
-
-  console.log('process: ', process.env.DB_PASSWORD || false);
   
   const app = express();
 

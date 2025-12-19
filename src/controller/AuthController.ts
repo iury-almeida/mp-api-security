@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AuthService } from '../../service/AuthService';
+import { AuthService } from '../service/AuthService';
 
 export class AuthController {
   private readonly authService: AuthService;
@@ -52,7 +52,3 @@ export class AuthController {
     }
   }
 }
-
-
-
-

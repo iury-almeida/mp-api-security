@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { User } from '../../src/entity/User';
+import { Profile } from '../../src/entity/Profile';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -10,8 +11,8 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || 'Drums6@',
   database: process.env.DB_NAME || 'MultipecasDB',
-  entities: [User], // ***** DO NOT FORGET TO ADD THE ENTITIES HERE *******
-  synchronize: false, // Apenas para ambiente de desenvolvimento
+  entities: [User, Profile], // ***** DO NOT FORGET TO ADD THE ENTITIES HERE *******
+  synchronize: true, // Apenas para ambiente de desenvolvimento
   logging: false,
 });
 

@@ -1,5 +1,5 @@
-import { AppDataSource } from '../../../config/database/data-source';
-import { User } from '../../entity/User';
+import { AppDataSource } from '../../config/database/data-source';
+import { User } from '../entity/User';
 
 export class AuthRepository {
   private readonly userRepository = AppDataSource.getRepository(User);

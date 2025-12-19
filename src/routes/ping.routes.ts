@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { PingController } from '../controller/ping/PingController';
+import { PingController } from '../controller/PingController';
 
 export const healthRouter = Router();
 
