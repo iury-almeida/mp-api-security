@@ -5,7 +5,6 @@ export const authRouter = Router();
 
 const authController = new AuthController();
 
-// Rota de login
 authRouter.post('/Login/autenticacao', (req, res) => {
   authController.login(req, res).catch((error) => {
     console.error('Error in login route:', error);

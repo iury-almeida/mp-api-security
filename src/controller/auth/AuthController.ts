@@ -8,9 +8,9 @@ export class AuthController {
     this.authService = new AuthService();
   }
 
-  public async login(req: Request, res: Response): Promise<Response> {
+  public async login(req: any, res: Response): Promise<Response> {
     try {
-      const { cpf, password } = req.body;
+      const { cpf, password } = req.query;
 
       if (!cpf || !password) {
         return res.status(400).json({
@@ -22,13 +22,14 @@ export class AuthController {
 
       return res.status(200).json({
         message: 'Login successful',
+        status: 200,
         token: result.token,
         user: result.user,
       });
     } catch (error) {
       if (error instanceof Error && error.message === 'Invalid credentials') {
         return res.status(401).json({
-          message: 'Invalid credentials',
+          message: 'Access denied - Invalid credentials',
         });
       }
 
@@ -38,6 +39,13 @@ export class AuthController {
         });
       }
 
+      if (error instanceof Error && error.message === 'CPF and password are required') {
+        return res.status(400).json({
+          message: error.message,
+        });
+      }
+
+      console.error('Login error:', error);
       return res.status(500).json({
         message: 'Internal server error',
       });

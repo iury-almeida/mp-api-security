@@ -1,12 +1,18 @@
+import { AppDataSource } from '../../../config/database/data-source';
+import { User } from '../../entity/User';
+
 export class AuthRepository {
-  // Aqui você irá integrar com banco de dados ou serviço externo
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public async findUserByUsername(username: string): Promise<void> {
-    // TODO: Implementar busca de usuário
-    void username;
+  private readonly userRepository = AppDataSource.getRepository(User);
+
+  public async findUserByCpf(cpf: string): Promise<User | null> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { cpf },
+      });
+      return user;
+    } catch (error) {
+      console.error('Error finding user by CPF:', error);
+      throw new Error('Database error while searching for user');
+    }
   }
 }
-
-
-
-

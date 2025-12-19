@@ -1,36 +1,51 @@
 import { AuthRepository } from '../../repository/auth/AuthRepository';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 export interface LoginResult {
   token: string;
   user: {
+    id: string;
     cpf: string;
+    name: string;
   };
 }
 
 export class AuthService {
   private readonly authRepository: AuthRepository;
-  private readonly MOCKED_CPF = '12345678909';
-  private readonly MOCKED_PASSWORD = 'teste123';
 
   constructor() {
     this.authRepository = new AuthRepository();
   }
 
   public async login(cpf: string, password: string): Promise<LoginResult> {
-    // Validate mocked credentials
-    if (cpf !== this.MOCKED_CPF || password !== this.MOCKED_PASSWORD) {
+    if (!cpf || !password) {
+      throw new Error('CPF and password are required');
+    }
+
+    const user = await this.authRepository.findUserByCpf(cpf);
+
+    if (!user) {
       throw new Error('Invalid credentials');
     }
 
-    // Generate JWT token
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+
+    if (!isPasswordValid) {
+      throw new Error('Invalid credentials');
+    }
+
     const secret = process.env.JWT_SECRET;
     if (!secret) {
       throw new Error('JWT_SECRET is not configured');
     }
 
     const token = jwt.sign(
-      { cpf: this.MOCKED_CPF },
+      { 
+        id: user.id,
+        cpf: user.cpf,
+        name: user.name
+      },
       secret,
       { expiresIn: '24h' }
     );
@@ -38,7 +53,9 @@ export class AuthService {
     return {
       token,
       user: {
-        cpf: this.MOCKED_CPF,
+        id: user.id,
+        cpf: user.cpf,
+        name: user.name,
       },
     };
   }
